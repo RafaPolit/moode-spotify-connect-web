@@ -78,6 +78,8 @@ $ setsid /PATH/TO/INSTALL/spotify-connect-web/spotify-connect-web --playback_dev
 
 That's it, you should now have a working Spotify Connect inside moOde.  This basic setup requires moOde Player to be stopped manually in order for Spotify Connect to get access to the ALSA device.  It also requires Spotify Connect to be stopped for the moOde Player to gain access back to the device.  Once this service is integrated into moOde, all this will happen automatically, just as is the case with AirPlay.
 
+Also, even if run as daemons, you NEED to start the daemons again after a reset.  I'll add instructions soon to have the services run at startup so you just need to configure them once and then forget about it!
+
 ## Status Monitoring (further development info)
 
 To monitor the status of the Spotify Connect server, there is a RESTfull web api implemented on port 4000.
