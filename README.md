@@ -28,6 +28,7 @@ $ tar zxvf spotify-connect-web_0.0.3-alpha.tar.gz
 - The spotify authentication key.  There is one provided in this repo, but it's better if you first try the proper chanel to get one from Spotify directly.
 
 ```
+$ cd spotify-connect-web
 $ wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/spotify_appkey.key
 ```
 Instalation instructions assume you put the key in the same folder where you installed spotify-connect-web.  If not, change the parameter accordingly.
