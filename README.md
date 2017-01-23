@@ -62,7 +62,12 @@ Replace the [hw:1] in --playback_device with the ALSA device you want to use.  A
 
     $ aplay -L
 
+-------------
+*Note:*
+
 Inside moOde Player libs, the same parameter passed to **shairport sync -d** in /var/www/inc/playerlib.php works perfectly!
+
+--------------
 
 Again, should you wish to run it as a daemon:
 
