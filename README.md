@@ -12,13 +12,13 @@ Dependencies:
 
 - For zero-conf multiuser (this will prevent the need of user and password, but it is yet another service that needs to be run!)
 
-      $ sudo apt-get install avahi-utils
+    $ sudo apt-get install avahi-utils
 
 - The spotify-connect-web binaries and dependencies
 
-      $ cd /PATH/TO/INSTALL
-      $ wget https://github.com/Fornoth/spotify-connect-web/releases/download/0.0.3-alpha/spotify-connect-web_0.0.3-alpha.tar.gz
-      $ tar zxvf spotify-connect-web_0.0.3-alpha.tar.gz
+    $ cd /PATH/TO/INSTALL
+    $ wget https://github.com/Fornoth/spotify-connect-web/releases/download/0.0.3-alpha/spotify-connect-web_0.0.3-alpha.tar.gz
+    $ tar zxvf spotify-connect-web_0.0.3-alpha.tar.gz
 
 Running
 =======
@@ -26,11 +26,11 @@ Running
 ## Zero conf avahi service
 The zero-conf service is run with:
 
-      $ avahi-publish-service TestConnect _spotify-connect._tcp 4000 VERSION=1.0 CPath=/login/_zeroconf
+    $ avahi-publish-service TestConnect _spotify-connect._tcp 4000 VERSION=1.0 CPath=/login/_zeroconf
 
 I have been running them with:
 
-      $ setsid avahi-publish-service TestConnect _spotify-connect._tcp 4000 VERSION=1.0 CPath=/login/_zeroconf >/dev/null 2>&1
+    $ setsid avahi-publish-service TestConnect _spotify-connect._tcp 4000 VERSION=1.0 CPath=/login/_zeroconf >/dev/null 2>&1
 
 To run them as a deamon.  Probably you have a different way?
 
@@ -38,11 +38,11 @@ To run them as a deamon.  Probably you have a different way?
 
 The binary can be run with
 
-      $ /PATH/TO/INSTALL/spotify-connect-web/spotify-connect-web --playback_device hw:1 --bitrate 320 --name "moOde Connect" --key /PATH/TO/INSTALL/spotify-connect-web/spotify_appkey.key
+    $ /PATH/TO/INSTALL/spotify-connect-web/spotify-connect-web --playback_device hw:1 --bitrate 320 --name "moOde Connect" --key /PATH/TO/INSTALL/spotify-connect-web/spotify_appkey.key
 
 Replace the [hw:1] in --playback_device with the ALSA device you want to use.  Available options can be obtained with
 
-      $ aplay -L
+    $ aplay -L
 
 Inside moOde Player libs, the same parameter passed to **shairport sync -d** in /var/www/inc/playerlib.php works perfectly!
 
