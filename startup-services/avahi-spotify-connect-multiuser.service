@@ -1,0 +1,13 @@
+Description=Avahi Spotify Connect Multiuser
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/avahi-publish-service TestConnect _spotify-connect._tcp 4000 VERSION=1.0 CPath=/login/_zeroconf
+Restart=always
+RestartSec=10
+StartLimitInterval=30
+StartLimitBurst=20
+
+[Install]
+WantedBy=multi-user.target
+
