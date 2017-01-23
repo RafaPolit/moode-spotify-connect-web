@@ -12,7 +12,9 @@ Dependencies:
 
 - For zero-conf multiuser (this will prevent the need of user and password, but it is yet another service that needs to be run!)
 
-    $ sudo apt-get install avahi-utils
+```
+$ sudo apt-get install avahi-utils
+```
 
 - The spotify-connect-web binaries and dependencies
 
