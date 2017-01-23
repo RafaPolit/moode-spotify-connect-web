@@ -85,9 +85,12 @@ The status route returns a JSON object.  One of the keys is an "active" boolean 
 
 The metadata route returns a JSON that holds the name, artist, etc., as well as an url for the album art.  (**Tim**, this could also be integrated into the moode play section to show current track?, not neccessary but could be useful)
 
+-------------------------
+
 Hope this helps someone!
 
 Happy listening.
+
 Rafa.
 
 
