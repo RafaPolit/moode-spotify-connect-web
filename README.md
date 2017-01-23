@@ -28,6 +28,7 @@ $ tar zxvf spotify-connect-web_0.0.3-alpha.tar.gz
 - The spotify authentication key.  There is one provided in this repo, but it's better if you first try the proper chanel to get one from Spotify directly.
 
 ```
+$ cd spotify-connect-web
 $ wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/spotify_appkey.key
 ```
 Instalation instructions assume you put the key in the same folder where you installed spotify-connect-web.  If not, change the parameter accordingly.
@@ -87,17 +88,15 @@ Again, should you wish to run it as a daemon:
 $ setsid /PATH/TO/INSTALL/spotify-connect-web/spotify-connect-web --playback_device hw:1 --bitrate 320 --name "moOde Connect" --key /PATH/TO/INSTALL/spotify-connect-web/spotify_appkey.key >/dev/null 2>&1
 ```
 
+If you want to configure it a service at startup, instructions are just below.
+
 That's it, you should now have a working Spotify Connect inside moOde.  This basic setup requires moOde Player to be stopped manually in order for Spotify Connect to get access to the ALSA device.  It also requires Spotify Connect to be stopped for the moOde Player to gain access back to the device.  Once this service is integrated into moOde, all this will happen automatically, just as is the case with AirPlay.
 
 ## Configuring as service
 
 Inside the **startup-services** folder of this respository, you can find two files for configuring both scripts as startup services.
 
-Place both files insde the system folder in lib -> systemd:
-
-```
-/lib/systemd/system
-```
+Place both files insde the **/lib/systemd/system/** folder, and change BOTH PATHS in the *spotify-connect-web.service* service to reflect your current installation path.
 
 You need to change both files ownership to root:root.
 
