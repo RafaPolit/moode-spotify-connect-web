@@ -122,6 +122,19 @@ $ sudo systemctl enable spotify-connect-web.service
 
 That should do it!
 
+## Running with softvol to avoid volume issues
+
+Since the default setting modifies the PCM volume, you could end up lowering the volume on Spotify Connect and then not being able to get it back up in Moode (for instance if you have set it to hardware volume or have disabled volume all together).
+
+For such a case, create a file in **/etc/** called asound.conf with the contents listed in the file in this repository.  After that, run the Spotify service with:
+
+```
+--playback_device softvol -m Master 
+```
+
+Instead of the current settings.
+
+note: this is apparently not working on Moode 3.6 as the asound.conf file is not being accepted for some reason.
 
 Status Monitoring (further development info)
 ============================================
