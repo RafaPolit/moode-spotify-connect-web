@@ -126,15 +126,15 @@ That should do it!
 
 Since the default setting modifies the PCM volume, you could end up lowering the volume on Spotify Connect and then not being able to get it back up in Moode (for instance if you have set it to hardware volume or have disabled volume all together).
 
-For such a case, create a file in **/etc/** called asound.conf with the contents listed in the file in this repository.  After that, run the Spotify service with:
+For such a case, create a file in **/etc/** called asound.conf with the contents listed in the file in this repository.  After that, run the Spotify service changing the following arguments:
 
 ```
---playback_device softvol -m Master 
+--playback_device softvol -m Master --mixer_device_index 0
 ```
 
-Instead of the current settings.
+... instead of the settings described above settings.
 
-note: this is apparently not working on Moode 3.6 as the asound.conf file is not being accepted for some reason.
+If this is successful, the volume from within Moode controls the system-wide volume, and the spotify-playing device (such as your phone) controls only the volume of the spotify music and does not affect the overall volume.  
 
 Status Monitoring (further development info)
 ============================================
