@@ -126,7 +126,13 @@ That should do it!
 
 Since the default setting modifies the PCM volume, you could end up lowering the volume on Spotify Connect and then not being able to get it back up in Moode (for instance if you have set it to hardware volume or have disabled volume all together).
 
-For such a case, create a file in **/etc/** called asound.conf with the contents listed in the file in this repository.  After that, run the Spotify service changing the following arguments:
+For such a case, create a file in **/etc/** called asound.conf with the contents listed in the file in this repository.  In order to activate the new virtual device:
+
+```
+$ speaker-test -Dsoftvol -c2
+```
+
+After that, run the Spotify service changing the following arguments:
 
 ```
 --playback_device softvol -m Master --mixer_device_index 0
@@ -148,6 +154,7 @@ $ git clone https://github.com/Fornoth/spotify-connect-web.git
 $ cd spotify-connect-web
 $ wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/spotify_appkey.key
 $ wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/libspotify_embedded_shared.so
+$ sudo chmod +x libspotify_embedded_shared.so
 $ sudo apt-get install python-dev libffi-dev libasound2-dev
 $ pip install -r requirements.txt
 ```
@@ -192,6 +199,12 @@ StartLimitBurst=20
 
 [Install]
 WantedBy=multi-user.target
+```
+
+I also needed, still for unknown reasons, to 'activate' the softvol device and mixer by:
+
+```
+$ speaker-test -Dsoftvol -c2
 ```
 
 Whith this, I have everything working on the BETA version of Moode 4.  I'll report any changes as Moode 4 beta stage continues evolving.
