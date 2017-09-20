@@ -134,7 +134,68 @@ For such a case, create a file in **/etc/** called asound.conf with the contents
 
 ... instead of the settings described above settings.
 
-If this is successful, the volume from within Moode controls the system-wide volume, and the spotify-playing device (such as your phone) controls only the volume of the spotify music and does not affect the overall volume.  
+If this is successful, the volume from within Moode controls the system-wide volume, and the spotify-playing device (such as your phone) controls only the volume of the spotify music and does not affect the overall volume.
+
+Moode 4.x (as of now in beta)
+============================================
+
+I was unable to successfuly implement this on Moode 4.x (beta) with the packaged release of spotify-connect-web.  For those scenarios, following the instructions on **Installation from source** worked.
+
+```
+$ cd /home/pi
+$ mkdir spotify && cd spotify
+$ git clone https://github.com/Fornoth/spotify-connect-web.git
+$ cd spotify-connect-web
+$ wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/spotify_appkey.key
+$ wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/libspotify_embedded_shared.so
+$ sudo apt-get install python-dev libffi-dev libasound2-dev
+$ pip install -r requirements.txt
+```
+
+The **pip install** can take a VERY long time, let it run!
+
+```
+$ cd ..
+$ vim spotify-connect.sh
+```
+
+Inside the sh file put:
+
+```
+#!/bin/sh
+
+cd /
+cd home/pi/spotify/spotify-connect-web
+LD_LIBRARY_PATH=/home/pi/spotify/spotify-connect-web python main.py --playback_device softvol -m Master --mixer_device_index 0 --bitrate 320 --name "moOde Connect" --key /home/pi/spotify/spotify-connect-web/spotify_appkey.key
+cd /
+```
+
+This asssumes you are using the softvol solution listed above, which is very useful.  If not, add the correct parameters as needed.
+
+```
+$ sudo chmod 755 spotify-connect.sh
+```
+
+The service spotify-connect-web.service should be a little different than the one listed above, it should be:
+
+```
+Description=Spotify Connect Web
+After=network.target avahi-spotify-connect-multiuser.service
+
+[Service]
+User=pi
+ExecStart=/home/pi/spotify/spotify-connect.sh
+Restart=always
+RestartSec=10
+StartLimitInterval=30
+StartLimitBurst=20
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Whith this, I have everything working on the BETA version of Moode 4.  I'll report any changes as Moode 4 beta stage continues evolving.
+
 
 Status Monitoring (further development info)
 ============================================
