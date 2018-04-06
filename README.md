@@ -229,9 +229,8 @@ This should accomplish to render the album and song data and replace the conuter
 ** Disclamer ** This is in early alpha.
 Known issues:
 - This DOES NOT stop the MPD or Airplay session that may be playing.  You need to stop them manually
-- This DOES NOT allow any funcionality through play or next buttons
-- This DOES NOT take over from Spotify if you click on a playlist track from within Moode.  As a matter of fact, that will break the spotify access to the ALSA card and you would need to re-connect to the Spotify Connect client
-- This has issues when, after stopping Spotify, you try to play the SAME song that was playing before on Moode MPD.  This would be easily solvable if the JS, instead of a standalone, would be inserted inside the **playerlib.js** file.  The issue is that I wanted to keep this as separated as possible to avoid instructions of where to store things.  If you are feeling brave, put it in, it will work better.
+- This DOES NOT allow any funcionality through play or next buttons (now hidden from the main view, still some mobile devices may show them)
+- This DOES NOT allow MPD to take over from Spotify if you click on a playlist track from within Moode if Spotify is playing music.  As a matter of fact, that will break the spotify access to the ALSA card and you would need to re-connect to the Spotify Connect client
 - Small issue: I am pointing to a fixed server for the ablum covers, which may return as slightly different version of the cover than the one shown in spotify.  I may end up using Spotify API, but that requires asking for a token, etc., so that will need to come in later.
 
 Please note that this is at EXTREME ALPHA stages.  I'm mostly documenting this for myself, so use with caution.
