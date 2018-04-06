@@ -147,10 +147,12 @@ pcm.softvol {
 }
 ```
 
-This is a 'best bet' approach.  For other i2c devices you probably need to replace the pcm with digital, or other configs.  Please research how to map your device to a new ALSA virtual channel.  This has proven the most difficult past in the past to get right.
+This is a 'best bet' approach.  For other i2c devices you probably need to replace the pcm with digital, or other configs.  Please research how to map your device to a new ALSA virtual channel.  This has proven the most difficult part in the past to get right.
 
 To make sure the mapping work:
-First: LOWER YOUR VOLUME!!!! (very important, the next step will produce a loud noise on the speakers)
+
+First: **LOWER YOUR VOLUME!!!!** (very important, the next step will produce a loud noise on the speakers)
+
 Then:
 ```
 $ speaker-test -Dsoftvol -c2
@@ -161,8 +163,8 @@ This should alternate playing a noise in each channel of your card.  If this did
 If things described in the following steps don't work, experiment with other cards (for example hw:0), or change the **--mixer_device_index** in the spotify-connect.sh script to 1.
 
 
-Test that everything went well
-==============================
+Enabling the Services
+=====================
 
 Lets start the services
 
@@ -177,7 +179,8 @@ Test that spotify-connect-web is working with:
 $ sudo systemctl status spotify-connect-web.service
 ```
 
-If everything looks OK and you can connect with your phone, tablet or PC.
+If everything looks OK and you can connect with your phone, tablet or PC, you are done.
+
 If not, change the value of the mixer in the **--mixer_device_index** in the spotify-connect.sh script we created in previous steps.  Please report your success stories so others can benefit from it.
 
 
@@ -203,7 +206,7 @@ inside the **/var/www/js/** directory.
 <!-- SPOTIFY CONNECT -->
 <script src="js/spotifylib.js"></script>
 ```
-- Add the node-red from: https://github.com/RafaPolit/moode-spotify-connect-web/blob/master/node-red/Spotify%20Connect%20Web into Node-REd
+- Add the flow contained in: https://github.com/RafaPolit/moode-spotify-connect-web/blob/master/node-red/Spotify%20Connect%20Web into Node-REd
 - Deploy the node
 
 This should accomplish to render the album and song data and replace the conuter wit SPOTIFY.
