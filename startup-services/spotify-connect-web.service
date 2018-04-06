@@ -2,7 +2,8 @@ Description=Spotify Connect Web
 After=network.target avahi-spotify-connect-multiuser.service
 
 [Service]
-ExecStart=/PATH/TO/INSTALL/spotify-connect-web/spotify-connect-web --playback_device hw:1 --bitrate 320 --name "moOde Connect" --key /PATH/TO/INSTALL/spotify-connect-web/spotify_appkey.key -m PCM --mixer_device_index 1
+User=pi
+ExecStart=/home/pi/spotify/spotify-connect.sh
 Restart=always
 RestartSec=10
 StartLimitInterval=30
