@@ -11,141 +11,20 @@ https://github.com/Fornoth/spotify-connect-web
 Dependencies:
 =============
 
-- For zero-conf multiuser (this will prevent the need of user and password, but it is yet another service that needs to be run!)
+- avahi-utils for zero-conf multiuser (this will prevent the need of user and password, but it is yet another service that needs to be run!)
+- python-dev and other utils for compiling the main software
 
 ```
 $ sudo apt-get install avahi-utils
+$ sudo apt-get install python-dev libffi-dev libasound2-dev
 ```
-
-- The spotify-connect-web binaries and dependencies
-
-```
-$ cd /PATH/TO/INSTALL
-$ wget https://github.com/Fornoth/spotify-connect-web/releases/download/0.0.3-alpha/spotify-connect-web_0.0.3-alpha.tar.gz
-$ tar zxvf spotify-connect-web_0.0.3-alpha.tar.gz
-```
-
-- The spotify authentication key.  There is one provided in this repo, but it's better if you first try the proper chanel to get one from Spotify directly.
-
-```
-$ cd spotify-connect-web
-$ wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/spotify_appkey.key
-```
-Instalation instructions assume you put the key in the same folder where you installed spotify-connect-web.  If not, change the parameter accordingly.
-
-Running
-=======
-
-## Zero conf avahi service
-The zero-conf service is run with:
-
-```
-$ avahi-publish-service TestConnect _spotify-connect._tcp 4000 VERSION=1.0 CPath=/login/_zeroconf
-```
-
-In order to run them as a daemon (and prevent having to keep the console open) I have been running them with:
-
-```
-$ setsid avahi-publish-service TestConnect _spotify-connect._tcp 4000 VERSION=1.0 CPath=/login/_zeroconf >/dev/null 2>&1
-```
-
-This can be improved configuring them as services at startup (instructions just below!), or, if integrated into moOde Player, run by the Player itself upon demand.
-
-## Spotify Connect Web
-
-The binary can be run with
-
-```
-$ /PATH/TO/INSTALL/spotify-connect-web/spotify-connect-web --playback_device hw:1 -m PCM --mixer_device_index 1 --bitrate 320 --name "moOde Connect" --key /PATH/TO/INSTALL/spotify-connect-web/spotify_appkey.key
-```
-
-Replace the [hw:1] in --playback_device with the ALSA device you want to use.  Available options can be obtained with:
-
-```
-$ aplay -L
-```
-
-Replace [PCM] in -m for "Digital" if you have an i2s audio device (thanks Tim for the tip), leave PCM if you have are using a USB audio device (external DAC).
-
-Replace the [1] in --mixer_device_index with the correct index for your mixer device.  You can get the index by inspecting the output of:
-
-```
-$ amixer controls
-```
-
-Find something that resembles 'Playback Volume'.
-
--------------
-*Note:*
-
-Inside moOde Player libs, the same parameter passed to **shairport sync -d** in /var/www/inc/playerlib.php works perfectly for --playback_device!
-
---------------
-
-Again, should you wish to run it as a daemon:
-
-```
-$ setsid /PATH/TO/INSTALL/spotify-connect-web/spotify-connect-web --playback_device hw:1 --bitrate 320 --name "moOde Connect" --key /PATH/TO/INSTALL/spotify-connect-web/spotify_appkey.key >/dev/null 2>&1
-```
-
-If you want to configure it a service at startup, instructions are just below.
-
-That's it, you should now have a working Spotify Connect inside moOde.  This basic setup requires moOde Player to be stopped manually in order for Spotify Connect to get access to the ALSA device.  It also requires Spotify Connect to be stopped for the moOde Player to gain access back to the device.  Once this service is integrated into moOde, all this will happen automatically, just as is the case with AirPlay.
-
-## Configuring as service
-
-Inside the **startup-services** folder of this respository, you can find two files for configuring both scripts as startup services.
-
-Place both files insde the **/lib/systemd/system/** folder, and change BOTH PATHS in the *spotify-connect-web.service* service to reflect your current installation path.
-
-You need to change both files ownership to root:root.
-
-Now, to test that they are working correctly:
-
-```
-$ sudo systemctl start avahi-spotify-connect-multiuser.service
-$ sudo systemctl start spotify-connect-web.service
-```
-
-Test that spotify-connect-web is working with:
-
-```
-$ sudo systemctl status spotify-connect-web.service
-```
-
-If everything looks OK and you can connect with your phone, tablet or PC, you can ENABLE both service to run at startup:
-
-```
-$ sudo systemctl enable avahi-spotify-connect-multiuser.service
-$ sudo systemctl enable spotify-connect-web.service
-```
-
-That should do it!
-
-## Running with softvol to avoid volume issues
-
-Since the default setting modifies the PCM volume, you could end up lowering the volume on Spotify Connect and then not being able to get it back up in Moode (for instance if you have set it to hardware volume or have disabled volume all together).
-
-For such a case, create a file in **/etc/** called asound.conf with the contents listed in the file in this repository.  In order to activate the new virtual device:
-
-```
-$ speaker-test -Dsoftvol -c2
-```
-
-After that, run the Spotify service changing the following arguments:
-
-```
---playback_device softvol -m Master --mixer_device_index 0
-```
-
-... instead of the settings described above settings.
-
-If this is successful, the volume from within Moode controls the system-wide volume, and the spotify-playing device (such as your phone) controls only the volume of the spotify music and does not affect the overall volume.
 
 Moode 4.x
 ============================================
 
-I was unable to successfuly implement this on Moode 4.x (beta) with the packaged release of spotify-connect-web.  For those scenarios, following the instructions on **Installation from source** worked.
+Here are the instructions to follow.  On previous versions, I had added options for standalone running, background running and service running.  Keeping all those approaches proved difficult and confussing.  I am just leaving a single set of instructions to run as a service. Hope this removes any ambiguity from the procedure.
+
+*Please note*: I use **vim** for editing files, but use whatever suits you better.  Just replace the vim instructions with your editor of choice.
 
 ```
 $ cd /home/pi
@@ -155,7 +34,6 @@ $ cd spotify-connect-web
 $ wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/spotify_appkey.key
 $ wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/libspotify_embedded_shared.so
 $ sudo chmod +x libspotify_embedded_shared.so
-$ sudo apt-get install python-dev libffi-dev libasound2-dev
 $ pip install -r requirements.txt
 ```
 
@@ -177,14 +55,46 @@ LD_LIBRARY_PATH=/home/pi/spotify/spotify-connect-web python main.py --playback_d
 cd /
 ```
 
-This asssumes you are using the softvol solution listed above, which is very useful.  If not, add the correct parameters as needed.
+Please note that the softvol playback device and the Master mixer is something we will create afterwards.  Also, the **--mixer_device_index** would require some experimentation, depending on your setup.  More on this later.
+
+You need to make the file executable:
 
 ```
 $ sudo chmod 755 spotify-connect.sh
 ```
 
-The service spotify-connect-web.service should be a little different than the one listed above, it should be:
+Configuring the services
+========================
 
+We want to configure both avahi and spotify to start with the device.  For that:
+
+```
+$ cd /lib/systemd/system/
+$ sudo vim avahi-spotify-connect-multiuser.service
+```
+
+Inside place the following:
+```
+Description=Avahi Spotify Connect Multiuser
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/avahi-publish-service TestConnect _spotify-connect._tcp 4000 VERSION=1.0 CPath=/login/_zeroconf
+Restart=always
+RestartSec=10
+StartLimitInterval=30
+StartLimitBurst=20
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then:
+```
+$ sudo vim spotify-connect-web.service
+```
+
+An place inside the following:
 ```
 Description=Spotify Connect Web
 After=network.target avahi-spotify-connect-multiuser.service
@@ -201,15 +111,87 @@ StartLimitBurst=20
 WantedBy=multi-user.target
 ```
 
-I also needed, still for unknown reasons, to 'activate' the softvol device and mixer by:
+Audio softvol configuration
+===========================
 
+The idea is to have a softvol software device mapped to our soundcard into which we create a Master volume control.  This will prevent the spotify connect system from changing the main volume from the hardware.  For determining which are your devices available, run:
+
+```
+$ aplay -L
+```
+
+and also run:
+```
+$ amixer controls
+```
+
+This will give you some idea of which is your hardware (hw) device and which mixer you want it mapped to.
+
+With that info do:
+```
+$ cd /etc
+$ sudo vim asound.conf
+```
+
+Fill the file with this code:
+```
+pcm.softvol {
+  type softvol
+  slave {
+    pcm "hw:1"
+  }
+  control {
+    name "Master"
+    card 0
+  }
+}
+```
+
+This is a 'best bet' approach.  For other i2c devices you probably need to replace the pcm with digital, or other configs.  Please research how to map your device to a new ALSA virtual channel.  This has proven the most difficult past in the past to get right.
+
+To make sure the mapping work:
+First: LOWER YOUR VOLUME!!!! (very important, the next step will produce a loud noise on the speakers)
+Then:
 ```
 $ speaker-test -Dsoftvol -c2
 ```
 
-Whith this, I have everything working on the BETA version of Moode 4.  I'll report any changes as Moode 4 beta stage continues evolving.
+This should alternate playing a noise in each channel of your card.  If this didn't ouput the expected sound, edit the asound.conf file and change the hw:1 value to something meaningful.  For i2c devices and other configurations, please report your success stories in an issue so others can benefit from it.
 
-### Spotify Connect in Moode UI (alpha)
+If things described in the following steps don't work, experiment with other cards (for example hw:0), or change the **--mixer_device_index** in the spotify-connect.sh script to 1.
+
+
+Test that everything went well
+==============================
+
+Lets start the services
+
+```
+$ sudo systemctl start avahi-spotify-connect-multiuser.service
+$ sudo systemctl start spotify-connect-web.service
+```
+
+Test that spotify-connect-web is working with:
+
+```
+$ sudo systemctl status spotify-connect-web.service
+```
+
+If everything looks OK and you can connect with your phone, tablet or PC.
+If not, change the value of the mixer in the **--mixer_device_index** in the spotify-connect.sh script we created in previous steps.  Please report your success stories so others can benefit from it.
+
+
+If all went well, you can ENABLE both service to run at startup:
+
+```
+$ sudo systemctl enable avahi-spotify-connect-multiuser.service
+$ sudo systemctl enable spotify-connect-web.service
+```
+
+
+Spotify Connect in Moode UI (alpha)
+===================================
+
 I have created a rudimentary option to show album art, track name, artist and album name into the Moode UI.
 To accomplish this:
 
@@ -235,27 +217,10 @@ Known issues:
 
 Please note that this is at EXTREME ALPHA stages.  I'm mostly documenting this for myself, so use with caution.
 
-Status Monitoring (further development info)
-============================================
+======================================
 
-To monitor the status of the Spotify Connect server, there is a RESTfull web api implemented on port 4000.
-
-The most useful routes are:
-
-- http://localhost:4000/api/info/status
-- http://localhost:4000/api/info/metadata
-
-The status route returns a JSON object.  One of the keys is an "active" boolean key.  False means that no client is connected to the Connect host, True means a client is connected to the host.  (**Tim**, this is probably the ON/OFF switch if this is to be integrated into moOde?)
-
-The metadata route returns a JSON that holds the name, artist, etc., as well as an url for the album art.  (**Tim**, this could also be integrated into the moode play section to show current track?, not neccessary but could be useful)
-
--------------------------
-
-Hope this helps someone!
+That's it for now.  Hope this helps someone!
 
 Happy listening.
 
 Rafa.
-
-
-
