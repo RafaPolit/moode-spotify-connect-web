@@ -1,13 +1,27 @@
+function cleanUI() {
+  // playlist
+  $('.playlist li').removeClass('active');
+ 
+  // time knob
+  $('#total').css({'display': 'none'});
+  $('.playbackknob').val(0).trigger('change');
+  $('#playback-panel div.btn-toolbar > div').css({visibility: 'hidden'})
+}
+
+function restoreUI() {
+  $('#total').css({'display': 'block'});
+  $('#playback-panel div.btn-toolbar > div').css({visibility: 'visible'})
+}
+
 function renderSpcUI(metadata) {
   debugLog('renderSpcUI');
 
-  //time knob
+  cleanUI();
+
+  // time knob
   $('#countdown-display').css({"font-size":"24px"});
   $('#countdown-display').css({"margin-top":"-13px"});
   $('#countdown-display').html('SPOTIFY');
-
-  // playlist
-  $('.playlist li').removeClass('active');
 
   // cover art
   $('#coverart-url').html('<img class="coverart" src="http://i.scdn.co/image/' + metadata.cover_uri.substr(metadata.cover_uri.lastIndexOf(':') + 1) + '" alt="Cover art not found">');
@@ -19,7 +33,7 @@ function renderSpcUI(metadata) {
   $('#currentalbum').html(metadata.album_name);
 
   // reset this so cover art is redisplayed when resuming MPD playback
-  // UI.lastSong = '';
+  UI.lastSong = '';
 }
 
 function engineSpc() {
@@ -41,6 +55,10 @@ function engineSpc() {
 
     if (payload.action === 'engineSpc:newSong') {
       renderSpcUI(payload.metadata);
+    }
+   
+    if (payload.action === 'engineSpc:stop') {
+      restoreUI();
     }
   };
 }
