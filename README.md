@@ -208,7 +208,7 @@ $ sudo systemctl enable spotify-connect-web.service
 ```
 
 
-Spotify Connect in Moode UI (alpha)
+Spotify Connect in Moode UI (beta)
 ===================================
 
 I have created a rudimentary option to show album art, track name, artist and album name into the Moode UI.
@@ -232,11 +232,12 @@ $ sudo wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/va
 
 This should accomplish to render the album and song data and replace the conuter wit SPOTIFY.
 
-** Disclamer ** This is in early alpha.
+** Disclamer ** This is in early beta.
 Known issues:
 - This DOES NOT stop the MPD or Airplay session that may be playing.  You need to stop them manually
 - This DOES NOT allow any funcionality through play or next buttons (now hidden from the main view, still some mobile devices may show them)
-- This DOES NOT allow MPD to take over from Spotify if you click on a playlist track from within Moode if Spotify is playing music.  As a matter of fact, that will break the spotify access to the ALSA card and you would need to re-connect to the Spotify Connect client
+- This DOES NOT allow MPD to take over from Spotify if you click on a playlist track from within Moode if Spotify is playing music.  As a matter of fact, that will break the spotify access to the ALSA card and you would need to re-connect to the Spotify Connect client.
+- The album cover from 'cover view' only gets updated when, in cover view, you change a song.  Upon loading, it shows the underlying MPD cover.
 - Small issue: I am pointing to a fixed server for the ablum covers, which may return as slightly different version of the cover than the one shown in spotify.  I may end up using Spotify API, but that requires asking for a token, etc., so that will need to come in later.
 
 Please note that this is at EXTREME ALPHA stages.  I'm mostly documenting this for myself, so use with caution.
