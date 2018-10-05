@@ -19,7 +19,7 @@ $ sudo apt-get install avahi-utils
 $ sudo apt-get install python-dev libffi-dev libasound2-dev
 ```
 
-Moode 4.x
+Moode 4.3 +
 ============================================
 
 Here are the instructions to follow.  On previous versions, I had added options for standalone running, background running and service running.  Keeping all those approaches proved difficult and confussing.  I am just leaving a single set of instructions to run as a service. Hope this removes any ambiguity from the procedure.
