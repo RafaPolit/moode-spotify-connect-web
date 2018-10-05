@@ -215,9 +215,14 @@ I have created a rudimentary option to show album art, track name, artist and al
 To accomplish this:
 
 - Install Node-Red in the Rpi: https://nodered.org/docs/hardware/raspberrypi
-- Add the file: https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/var/www/js/spotifylib.js
-inside the **/var/www/js/** directory (thanks to ferdzb at http://moodeaudio.org/forum for updating the css selectors).
-- Add the following script near the end of the FOOTER file (where the MOODE JS scripts are located): **/var/www/footer.php**
+
+```
+$ cd /var/www/js/
+$ sudo wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/var/www/js/spotifylib.js
+```
+(thanks to ferdzb at http://moodeaudio.org/forum for updating the css selectors).
+
+- Add the following script near the end of the FOOTER file (where the MOODE LIBS scripts are located): **/var/www/footer.php**
 ```
 <!-- SPOTIFY CONNECT -->
 <script src="js/spotifylib.js"></script>
