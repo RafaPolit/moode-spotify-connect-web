@@ -147,7 +147,7 @@ pcm.softvol {
 }
 ```
 
-This is a 'best bet' approach.  For other i2c devices you probably need to replace the pcm with digital, or other configs.  Please research how to map your device to a new ALSA virtual channel.  This has proven the most difficult part in the past to get right.
+This is a 'best bet' approach.  For other i2c devices you probably need to change hw:1 to hw:0 on the slave -> pcm entry.  Some suggested changing the pcm key with 'digital', or other configs.  Please research how to map your device to a new ALSA virtual channel.  This has proven the most difficult part in the past to get right.
 
 To make sure the mapping work:
 
@@ -161,6 +161,22 @@ $ speaker-test -Dsoftvol -c2
 This should alternate playing a noise in each channel of your card.  If this didn't ouput the expected sound, edit the asound.conf file and change the hw:1 value to something meaningful.  For i2c devices and other configurations, please report your success stories in an issue so others can benefit from it.
 
 If things described in the following steps don't work, experiment with other cards (for example hw:0), or change the **--mixer_device_index** in the spotify-connect.sh script to 1.
+
+Updating main.py
+================
+Since Moode 4.2 and onwards due to package namings and versions, there is need to update the main.py python script within the spotify-connect-web directory.  For this (thanks to Platheo over at http://moodeaudio.org/forum for researching this issue):
+
+```
+$ cd /home/pi/spotify/spotify-connect-web/
+$ vim main.py
+```
+
+And replace the line that reads `from gevent.wsgi import WSGIServer` (line 12 of current version) with:
+```
+from gevent.pywsgi import WSGIServer
+```
+
+save and exit.
 
 
 Enabling the Services
