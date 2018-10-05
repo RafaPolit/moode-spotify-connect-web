@@ -24,13 +24,13 @@ function renderSpcUI(metadata) {
   $('#countdown-display').html('SPOTIFY');
 
   // cover art
-  $('#coverart-url').html('<img class="coverart" src="http://i.scdn.co/image/' + metadata.cover_uri.substr(metadata.cover_uri.lastIndexOf(':') + 1) + '" alt="Cover art not found">');
+  $('#coverart-url', #ss-coverart-url').html('<img class="coverart" src="http://i.scdn.co/image/' + metadata.cover_uri.substr(metadata.cover_uri.lastIndexOf(':') + 1) + '" alt="Cover art not found">');
 
   // metadata
-  $('#extratags').html('Spotify Connect active');
-  $('#currentartist').html(metadata.artist_name);
-  $('#currentsong').html(metadata.track_name);
-  $('#currentalbum').html(metadata.album_name);
+  $('#extratags, #ss-extratags').html('Spotify Connect active');
+  $('#currentartist, #ss-currentartist').html(metadata.artist_name);
+  $('#currentsong, #ss-currentsong').html(metadata.track_name);
+  $('#currentalbum, #ss-currentalbum').html(metadata.album_name);
 
   // reset this so cover art is redisplayed when resuming MPD playback
   UI.lastSong = '';
