@@ -24,7 +24,7 @@ function renderSpcUI(metadata) {
   $('#countdown-display').html('SPOTIFY');
 
   // cover art
-  $('#coverart-url', #ss-coverart-url').html('<img class="coverart" src="http://i.scdn.co/image/' + metadata.cover_uri.substr(metadata.cover_uri.lastIndexOf(':') + 1) + '" alt="Cover art not found">');
+  $('#coverart-url, #ss-coverart-url').html('<img class="coverart" src="http://i.scdn.co/image/' + metadata.cover_uri.substr(metadata.cover_uri.lastIndexOf(':') + 1) + '" alt="Cover art not found">');
 
   // metadata
   $('#extratags, #ss-extratags').html('Spotify Connect active');
