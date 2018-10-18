@@ -29,7 +29,7 @@ Here are the instructions to follow.  On previous versions, I had added options 
 ```
 $ cd /home/pi
 $ mkdir spotify && cd spotify
-$ git clone https://github.com/Fornoth/spotify-connect-web.git
+$ git clone https://github.com/RafaPolit/spotify-connect-web.git
 $ cd spotify-connect-web
 $ wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/spotify_appkey.key
 $ wget https://github.com/RafaPolit/moode-spotify-connect-web/raw/master/libspotify_embedded_shared.so
@@ -161,23 +161,6 @@ $ speaker-test -Dsoftvol -c2
 This should alternate playing a noise in each channel of your card.  If this didn't ouput the expected sound, edit the asound.conf file and change the hw:1 value to something meaningful.  For i2c devices and other configurations, please report your success stories in an issue so others can benefit from it.
 
 If things described in the following steps don't work, experiment with other cards (for example hw:0), or change the **--mixer_device_index** in the spotify-connect.sh script to 1.
-
-Updating main.py
-================
-Since Moode 4.2 and onwards due to package namings and versions, there is need to update the main.py python script within the spotify-connect-web directory.  For this (thanks to Platheo over at http://moodeaudio.org/forum for researching this issue):
-
-```
-$ cd /home/pi/spotify/spotify-connect-web/
-$ vim main.py
-```
-
-And replace the line that reads `from gevent.wsgi import WSGIServer` (line 12 of current version) with:
-```
-from gevent.pywsgi import WSGIServer
-```
-
-save and exit.
-
 
 Enabling the Services
 =====================
